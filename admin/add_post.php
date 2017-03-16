@@ -2,8 +2,32 @@
 
 <?php
 //Create a DB object
-$db = new Database();
+  $db = new Database();
 
+  if(isset($_POST['submit'])){
+    //Assign vars
+      $title = mysqli_real_escape_string($db->link, $_POST['title']);
+      $body = mysqli_real_escape_string($db->link, $_POST['body']);
+      $category = mysqli_real_escape_string($db->link, $_POST['category']);
+      $author = mysqli_real_escape_string($db->link, $_POST['author']);
+      $tags = mysqli_real_escape_string($db->link, $_POST['tags']);
+
+      //Simple Validation
+      if($title == '' || $body == '' || $category == '' || $author == '' || $tags == ''){
+        //Set Error
+          $error = 'Please fill out all the required fields';
+      } else{
+          $query = "INSERT INTO posts
+                         (title, body, category, author, tags)
+                         VALUES ('$title', '$body', '$category', '$author', '$tags')";
+
+          //Run the query
+
+          $insert_row = $db->insert($query);
+      }
+}
+?>
+<?php
 //Create a Query
 $query="SELECT*FROM category";
 
@@ -31,7 +55,7 @@ $categories= $db->select($query);
                     $selected = '';
                 }
                 ?>
-                <option <?php echo $selected;?>><?php echo $row['name'];?></option>
+                <option <?php echo $selected;?> value="<?php echo $row['id'];?>"><?php echo $row['name'];?></option>
             <?php endwhile;?>
         </select>
     </div>

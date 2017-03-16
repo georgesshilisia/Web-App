@@ -21,7 +21,35 @@ $categories= $db->select($query);
 
 ?>
 
-<form method="post" action="edit_post.php">
+<?php
+
+if(isset($_POST['submit'])){
+    //Assign vars
+    $title = mysqli_real_escape_string($db->link, $_POST['title']);
+    $body = mysqli_real_escape_string($db->link, $_POST['body']);
+    $category = mysqli_real_escape_string($db->link, $_POST['category']);
+    $author = mysqli_real_escape_string($db->link, $_POST['author']);
+    $tags = mysqli_real_escape_string($db->link, $_POST['tags']);
+
+    //Simple Validation
+    if($title == '' || $body == '' || $category == '' || $author == '' || $tags == ''){
+        //Set Error
+        $error = 'Please fill out all the required fields';
+    } else{
+        $query = "UPDATE posts
+                    SET 
+                        title = '$title',
+                        body = '$body', 
+                        category = '$category',
+                        author = '$author',
+                        tags = '$tags' 
+                        WHERE id =".$id;
+        //Run the query
+        $update_row = $db->update($query);
+    }
+}
+?>
+<form method="post" action="edit_post.php?id=<?php echo $id; ?>">
     <div class="form-group">
         <label>Post Title</label>
         <input type="text" name="title" class="form-control"  placeholder="Enter Title" value="<?php echo $post['title'];?>">
@@ -43,7 +71,7 @@ $categories= $db->select($query);
                    $selected = '';
                 }
                 ?>
-            <option <?php echo $selected;?>><?php echo $row['name'];?></option>
+            <option value="<?php echo $row['id'];?>"<?php echo $selected;?>><?php echo $row['name'];?></option>
             <?php endwhile;?>
         </select>
     </div>

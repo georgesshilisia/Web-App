@@ -6,13 +6,15 @@ $db = new Database;
 //Create a query
 $query = "SELECT posts.*, category.name FROM posts 
                  INNER JOIN category
-                 ON posts.category = category.id";
+                 ON posts.category = category.id
+                 ORDER BY posts.title DESC";
 
 //Select
 $posts= $db->select($query);
 
 //Create a Query
-$query="SELECT*FROM `category`";
+$query="SELECT*FROM `category`
+            ORDER BY name DESC";
 
 //Run the query
 $categories= $db->select($query);
