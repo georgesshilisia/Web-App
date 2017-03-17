@@ -5,7 +5,7 @@
 $db = new Database();
 
 //Create a Query
-$query="SELECT*FROM `posts`";
+$query="SELECT*FROM `posts` ORDER BY id desc";
 
 //Run the query
 $posts= $db->select($query);
